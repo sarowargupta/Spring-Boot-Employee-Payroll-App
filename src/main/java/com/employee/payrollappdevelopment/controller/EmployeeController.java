@@ -14,6 +14,8 @@ public class EmployeeController {
 
     //UC-01 Employee Payroll Spring Project to cater to REST Request from Employee Payroll UI
 
+    //UC-02 Rest Controller to demonstrate the various HTTP Methods
+
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -50,4 +52,5 @@ public class EmployeeController {
         employeeRepository.deleteById(id);
         return "Employee deleted successfully";
     }
+
 }
