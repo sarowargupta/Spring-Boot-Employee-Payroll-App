@@ -1,5 +1,7 @@
-package com.employee.payrollappdevelopment.entity;
+package com.employee.payrollappdevelopment.model;
 import jakarta.persistence.*;
+
+//Section -02 :- UC-01 Introducing Model to Employee Payroll App
 
 @Entity
 @Table(name = "employees")
