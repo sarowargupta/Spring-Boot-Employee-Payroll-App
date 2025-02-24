@@ -2,10 +2,12 @@ package com.employee.payrollappdevelopment.controller;
 import com.employee.payrollappdevelopment.dto.EmployeeDTO;
 import com.employee.payrollappdevelopment.model.Employee;
 import com.employee.payrollappdevelopment.repository.EmployeeRepository;
+import com.employee.payrollappdevelopment.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -65,7 +67,7 @@ public class EmployeeController {
     }
 
     // Get all employees (return DTOs)
-    @GetMapping("/emp")
+    @GetMapping("/dto")
     public List<EmployeeDTO> getEmployees() {
         return employeeRepository.findAll()
                 .stream()
@@ -74,7 +76,7 @@ public class EmployeeController {
     }
 
     // Get employee by ID (return DTO)
-    @GetMapping("/emp/{id}")
+    @GetMapping("/dto/{id}")
     public EmployeeDTO getEmployeesById(@PathVariable Long id) {
         Employee employee = employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found"));
@@ -82,7 +84,7 @@ public class EmployeeController {
     }
 
     // Add new employee (accept DTO)
-    @PostMapping("/emp")
+    @PostMapping("/dto")
     public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
         employee.setName(employeeDTO.getName());
@@ -93,7 +95,7 @@ public class EmployeeController {
     }
 
     // Update employee (accept DTO)
-    @PutMapping("/emp/{id}")
+    @PutMapping("/dto/{id}")
     public EmployeeDTO updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO) {
         return employeeRepository.findById(id)
                 .map(employee -> {
@@ -105,9 +107,45 @@ public class EmployeeController {
     }
 
     // Delete employee
-    @DeleteMapping("/emp/{id}")
+    @DeleteMapping("/dto/{id}")
     public void deleteEmployees(@PathVariable Long id) {
         employeeRepository.deleteById(id);
+    }
+
+
+    //UC-02 Introducing Service Layer in Employee Payroll App
+
+    @Autowired
+    private IEmployeeService employeeService;
+
+    // Get all employees
+    @GetMapping("/service")
+    public List<EmployeeDTO> getAllsEmployees() {
+        return employeeService.getAllEmployees();
+    }
+
+    // Get employee by ID
+    @GetMapping("/service/{id}")
+    public Optional<EmployeeDTO> getEmployeeByIds(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id);
+    }
+
+    // Add new employee
+    @PostMapping("/service")
+    public EmployeeDTO createEmployees(@RequestBody EmployeeDTO employeeDTO) {
+        return employeeService.createEmployee(employeeDTO);
+    }
+
+    // Update employee
+    @PutMapping("/service/{id}")
+    public EmployeeDTO updateEmployees(@PathVariable Long id, @RequestBody EmployeeDTO employeeDTO) {
+        return employeeService.updateEmployee(id, employeeDTO);
+    }
+
+    // Delete employee
+    @DeleteMapping("/service/{id}")
+    public void deletesEmployees(@PathVariable Long id) {
+        employeeService.deleteEmployee(id);
     }
 
 }

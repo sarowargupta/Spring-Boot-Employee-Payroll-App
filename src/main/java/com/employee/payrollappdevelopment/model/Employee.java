@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 
 //Section -02 :- UC-01 Introducing Model to Employee Payroll App
 
+//Section -01:- UC-01 & 02
+
 @Entity
 @Table(name = "employees")
 
