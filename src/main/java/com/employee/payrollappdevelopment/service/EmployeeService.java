@@ -5,8 +5,10 @@ import com.employee.payrollappdevelopment.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 //Section:-02 UC-02 Introducing Service Layer in Employee Payroll App
@@ -25,6 +27,9 @@ public class EmployeeService implements IEmployeeService {
     // Convert DTO to Model
     private Employee convertToModel(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
+
+        //Section-02 & UC-03
+        employee.setId(idCounter.getAndIncrement()); // Simulate auto-increment ID
         employee.setName(employeeDTO.getName());
         employee.setSalary(employeeDTO.getSalary());
         return employee;
@@ -64,4 +69,10 @@ public class EmployeeService implements IEmployeeService {
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
     }
+
+    //Section:-02 & UC-03 Ability for the service layer to store the employee payroll data
+
+    private final List<Employee> employeeList = new ArrayList<>();
+    private final AtomicLong idCounter = new AtomicLong(1); // To simulate auto-increment ID
+
 }
