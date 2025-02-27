@@ -1,19 +1,18 @@
 package com.employee.payrollappdevelopment.dto;
-
-// Section:-02 UC -01 Introducing DTO class
-
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-//Section :-03 Application Setting & UC-01 lombok library to autogenerate
-//getter and setter for the DTO
 
 //Employee DTO class
 @Data // Generate getters, setters method
-@NoArgsConstructor // lombok generate no argument constructor
-@AllArgsConstructor // Generate a constructor with argument of all field
 public class EmployeeDTO {
+
+    //Section-04 & UC -01 Data Validation and Exception Handling
+
+    private Long id;
+
+    @NotEmpty(message = "Name cannot be empty")
+    @Pattern(regexp = "^[A-Z][a-zA-Z ]{2,}$", message = "Name must start with a capital letter and have at least 3 characters")
     private String name;
     private double salary;
 

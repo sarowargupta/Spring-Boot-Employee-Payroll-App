@@ -1,4 +1,4 @@
-package com.employee.payrollappdevelopment.exception;
+package com.employee.payrollappdevelopment.validation;
 
 //handle exception when employee not found
 public class EmployeeNotFoundException extends RuntimeException {

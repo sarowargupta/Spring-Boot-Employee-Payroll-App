@@ -1,12 +1,12 @@
 package com.employee.payrollappdevelopment.model;
 import jakarta.persistence.*;
-
-//Section -02 :- UC-01 Introducing Model to Employee Payroll App
-
-//Section -01:- UC-01 & 02
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "employees")
+@Getter
+@Setter
 
 //class employee
 public class Employee {
@@ -24,7 +24,7 @@ public class Employee {
         this.salary = salary;
     }
 
-    //getter and setter
+ /*   //getter and setter
     public Long getId() {
 
         return id;
@@ -46,5 +46,5 @@ public class Employee {
     }
     public void setSalary(double salary) {
         this.salary = salary;
-    }
+    } */
 }
