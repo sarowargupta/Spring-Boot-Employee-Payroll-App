@@ -1,5 +1,6 @@
 package com.employee.payrollappdevelopment.service;
 import com.employee.payrollappdevelopment.dto.EmployeeDTO;
+import com.employee.payrollappdevelopment.validation.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,48 +9,51 @@ import java.util.Optional;
 @Service
 public class EmployeeService implements IEmployeeService {
 
-    private final List<EmployeeDTO> employeeList = new ArrayList<>();
+    //Section:-04 & UC-02 Provide user-friendly error response in case validation fails
 
-    //get all employee
+    private final List<EmployeeDTO> employeeList = new ArrayList<>();
+    private long idCounter = 1L;
+
+    //  Get all employees
     @Override
     public List<EmployeeDTO> getAllEmployees() {
         return employeeList;
     }
 
-    //get employee by id
+    //  Get employee by ID (Throw exception if not found)
     @Override
     public Optional<EmployeeDTO> getEmployeeById(Long id) {
         return employeeList.stream()
-                .filter(employee -> employee.getId().equals(id))
-                .findFirst();
+                .filter(emp -> emp.getId().equals(id))
+                .findFirst()
+                .or(() -> { throw new EmployeeNotFoundException("Employee with ID " + id + " not found"); });
     }
-
-    //create a new employee
+    //  Create a new employee
     @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
-        employeeDTO.setId((long) (employeeList.size() + 1)); // Generate a unique ID
+        employeeDTO.setId(idCounter++);  // Auto-increment ID
         employeeList.add(employeeDTO);
         return employeeDTO;
     }
 
-    //update employee by id
+    //  Update an employee by id (Throw exception if not found)
     @Override
     public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO) {
-        Optional<EmployeeDTO> existingEmployee = getEmployeeById(id);
-        if (existingEmployee.isPresent()) {
-            EmployeeDTO updatedEmployee = existingEmployee.get();
-            updatedEmployee.setName(employeeDTO.getName());
-            updatedEmployee.setSalary(employeeDTO.getSalary());
-            return updatedEmployee;
-        } else {
-            throw new RuntimeException("Employee not found with ID: " + id);
-        }
+        EmployeeDTO existingEmployee = getEmployeeById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
+
+        existingEmployee.setName(employeeDTO.getName());
+        existingEmployee.setSalary(employeeDTO.getSalary());
+        return existingEmployee;
     }
 
-    //delete employee by id
+
+    // Delete an employee by id (Throw exception if not found)
     @Override
     public void deleteEmployee(Long id) {
-        employeeList.removeIf(employee -> employee.getId().equals(id));
+        EmployeeDTO employee = getEmployeeById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found"));
+        employeeList.remove(employee);
     }
 
 }
