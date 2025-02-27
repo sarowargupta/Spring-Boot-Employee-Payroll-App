@@ -1,56 +1,63 @@
 package com.employee.payrollappdevelopment.controller;
 import com.employee.payrollappdevelopment.dto.EmployeeDTO;
 import com.employee.payrollappdevelopment.service.IEmployeeService;
+import com.employee.payrollappdevelopment.validation.EmployeeNotFoundException;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
 @Slf4j
 public class EmployeeController {
 
-    //Section:-04 & UC-02 Provide user-friendly error response in case validation fails
+    //Section:-04 & UC-03 Ability to throw User Friendly errors
+
     @Autowired
     private IEmployeeService employeeService;
 
     //  Get all employees
     @GetMapping
-    public List<EmployeeDTO> getAllEmployees() {
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         log.info("Fetching all employees");
-        return employeeService.getAllEmployees();
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
+        return ResponseEntity.ok(employees);
     }
 
     //  Get employee by ID
     @GetMapping("/{id}")
-    public Optional<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable Long id) {
         log.info("Fetching employee with ID: {}", id);
-        return employeeService.getEmployeeById(id);
+        EmployeeDTO employee = employeeService.getEmployeeById(id)
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee with ID " + id + " not found!"));
+        return ResponseEntity.ok(employee);
     }
 
-    // Create employee with validation
+    //  Create employee with validation
     @PostMapping
-    public EmployeeDTO createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> createEmployee(@Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Received request to create employee: {}", employeeDTO);
-        return employeeService.createEmployee(employeeDTO);
+        EmployeeDTO createdEmployee = employeeService.createEmployee(employeeDTO);
+        return ResponseEntity.ok(createdEmployee);
     }
 
     //  Update employee with validation
     @PutMapping("/{id}")
-    public EmployeeDTO updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmployeeDTO employeeDTO) {
         log.info("Updating employee with ID: {}", id);
-        return employeeService.updateEmployee(id, employeeDTO);
+        EmployeeDTO updatedEmployee = employeeService.updateEmployee(id, employeeDTO);
+        return ResponseEntity.ok(updatedEmployee);
     }
 
     //  Delete employee
     @DeleteMapping("/{id}")
-    public String deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long id) {
         log.info("Deleting employee with ID: {}", id);
         employeeService.deleteEmployee(id);
-        return "Employee with ID " + id + " deleted successfully!";
+        return ResponseEntity.ok("Employee with ID " + id + " deleted successfully!");
     }
 
 }

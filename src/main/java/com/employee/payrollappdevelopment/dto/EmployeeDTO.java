@@ -7,7 +7,7 @@ import lombok.Data;
 @Data // Generate getters, setters method
 public class EmployeeDTO {
 
-    //Section:-04 & UC-02 Provide user-friendly error response in case validation fails
+    //Section:-04 & UC-03 Ability to throw User Friendly errors
 
     private Long id;
 

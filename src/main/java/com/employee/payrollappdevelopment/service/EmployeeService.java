@@ -9,7 +9,7 @@ import java.util.Optional;
 @Service
 public class EmployeeService implements IEmployeeService {
 
-    //Section:-04 & UC-02 Provide user-friendly error response in case validation fails
+    //Section:-04 & UC-03 Ability to throw User Friendly errors
 
     private final List<EmployeeDTO> employeeList = new ArrayList<>();
     private long idCounter = 1L;
@@ -28,6 +28,7 @@ public class EmployeeService implements IEmployeeService {
                 .findFirst()
                 .or(() -> { throw new EmployeeNotFoundException("Employee with ID " + id + " not found"); });
     }
+
     //  Create a new employee
     @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
