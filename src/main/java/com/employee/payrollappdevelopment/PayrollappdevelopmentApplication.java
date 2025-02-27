@@ -21,6 +21,7 @@ public class PayrollappdevelopmentApplication {
 
 		//Section:-03 & UC-04 Database setting as environment variable
 		log.info("Employee Payroll DB user is {}",context.getEnvironment().getProperty("spring.datasource.username"));
+		
 
 	}
 }
