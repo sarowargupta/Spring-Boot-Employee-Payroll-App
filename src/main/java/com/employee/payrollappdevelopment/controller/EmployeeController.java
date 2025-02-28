@@ -16,7 +16,7 @@ import java.util.Optional;
 public class EmployeeController {
 
     //Section:-05 Using MySQL Repository to store employee payroll data
-    //UC-02 Ensure validation is done on the payroll DTO
+    //UC-04 ability to save employee payroll data to mysql DB
 
     @Autowired
     private IEmployeeService employeeService;

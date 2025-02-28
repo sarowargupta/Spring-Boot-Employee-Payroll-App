@@ -13,7 +13,8 @@ import java.time.LocalDate;
 public class EmployeeDTO {
 
     //Section:-05 Using MySQL Repository to store employee payroll data
-    //UC-02 Ensure validation is done on the payroll DTO
+    //UC-04 ability to save employee payroll data to mysql DB
+
     @NotEmpty(message = "Name cannot be empty")
     @Pattern(regexp = "^[A-Z][a-zA-Z ]{2,}$", message = "Name must start with a capital letter and have at least 3 characters")
     private String name;
