@@ -15,7 +15,7 @@ import java.util.List;
 public class Employee {
 
     //Section:-05 Using MySQL Repository to store employee payroll data
-    //UC-01 Add remaining properties to the payroll DTO and Model
+    //UC-02 Ensure validation is done on the payroll DTO
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice // Global exception handler
 public class GlobalExceptionHandler {
 
-    //Section:-04 & UC-03 Ability to throw User Friendly errors
-
     // Handle exception if employee not found
     @ExceptionHandler(EmployeeNotFoundException.class)
     public ResponseEntity<String> handleEmployeeNotFound(EmployeeNotFoundException ex) {

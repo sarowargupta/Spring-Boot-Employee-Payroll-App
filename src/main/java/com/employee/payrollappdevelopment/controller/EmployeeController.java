@@ -4,22 +4,25 @@ import com.employee.payrollappdevelopment.service.IEmployeeService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
 @Slf4j
+@RestController
 @RequestMapping("/employees")
+@Validated
 public class EmployeeController {
 
     //Section:-05 Using MySQL Repository to store employee payroll data
-    //UC-01 Add remaining properties to the payroll DTO and Model
+    //UC-02 Ensure validation is done on the payroll DTO
 
     @Autowired
     private IEmployeeService employeeService;
 
-    //get all employee
+
+    //get all employees
     @GetMapping
     public List<EmployeeDTO> getAllEmployees() {
         log.info("Fetching all employees");
@@ -54,5 +57,4 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
         return "Employee with ID " + id + " deleted successfully!";
     }
-
 }
