@@ -1,28 +1,37 @@
 package com.employee.payrollappdevelopment.model;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "employees")
-@Getter
-@Setter
-
+@Data // Generate getters, setters method
+@NoArgsConstructor
+@AllArgsConstructor
 //class employee
 public class Employee {
+
+    //Section:-05 Using MySQL Repository to store employee payroll data
+    //UC-01 Add remaining properties to the payroll DTO and Model
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
-
     private String name;
-    private double salary;
+    private Double salary;
+    private String gender;
+    private LocalDate startDate;
+    private String note;
+    private String profilePic;
 
-    public Employee() {}
+    @ElementCollection
+    private List<String> department;
 
-    public Employee(String name, double salary) {
-        this.name = name;
-        this.salary = salary;
-    }
+
 
  /*   //getter and setter
     public Long getId() {
@@ -47,4 +56,5 @@ public class Employee {
     public void setSalary(double salary) {
         this.salary = salary;
     } */
+
 }
