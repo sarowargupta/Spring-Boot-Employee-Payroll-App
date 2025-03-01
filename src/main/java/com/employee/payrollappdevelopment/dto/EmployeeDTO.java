@@ -14,7 +14,9 @@ import java.time.LocalDate;
 public class EmployeeDTO {
 
     //Section:-05 Using MySQL Repository to store employee payroll data
-    //UC-05 CRUD Service Methods with MySQL Database
+    //UC-06 Ability to retrieve all the records of employee
+
+    private long id;
 
     @NotEmpty(message = "Name cannot be empty")
     @Pattern(regexp = "^[A-Z][a-zA-Z ]{2,}$", message = "Name must start with a capital letter and have at least 3 characters")
