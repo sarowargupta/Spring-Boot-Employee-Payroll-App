@@ -1,57 +1,54 @@
 package com.employee.payrollappdevelopment.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "employees")
-@Data // Generate getters, setters method
 @NoArgsConstructor
+@Table(name = "employees")
+@Data//Generate getters,setters method
 @ToString
 //class employee
 public class Employee {
 
     //Section:-05 Using MySQL Repository to store employee payroll data
-    //UC-04 ability to save employee payroll data to mysql DB
+    //UC-05 CRUD Service Methods with MySQL Database
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
 
-    @Column(nullable = false)
+    @NotEmpty(message = "Name cannot be empty")
+    @Pattern(regexp = "^[A-Z][a-zA-Z ]{2,}$", message = "Name must start with a capital letter and have at least 3 characters")
     private String name;
 
-    @Column(nullable = false)
+    @Min(value = 500, message = "Minimum wage should be more than 500")
     private double salary;
 
-    @Column(nullable = false)
+    @Pattern(regexp = "male|female", message = "Gender needs to be male or female")
     private String gender;
 
     @JsonFormat(pattern = "dd MMM yyyy")
-    @NotNull(message = "Start date should not be empty")
-    @PastOrPresent(message = "Start date should be past or today's date")
+    @NotNull(message = "Start Date should not be empty")
+    @PastOrPresent(message = "Start Date should be past or today's date")
     private LocalDate startDate;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Note cannot be blank")
     private String note;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Profile picture URL cannot be blank")
     private String profilePic;
 
     @ElementCollection
+    @NotEmpty(message = "Department cannot be empty")
     private List<String> department;
 
-    // Constructor convertToEntity method
-    public Employee(String name, double salary, String gender, LocalDate startDate,
-                    String note, String profilePic, List<String> department) {
+    // constructor
+    public Employee(String name, double salary, String gender, LocalDate startDate, String note, String profilePic, List<String> department) {
         this.name = name;
         this.salary = salary;
         this.gender = gender;
@@ -60,6 +57,4 @@ public class Employee {
         this.profilePic = profilePic;
         this.department = department;
     }
-
-
 }

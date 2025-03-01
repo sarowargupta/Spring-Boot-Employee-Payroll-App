@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -15,36 +14,38 @@ import java.util.stream.Collectors;
 public class EmployeeService implements IEmployeeService {
 
     //Section:-05 Using MySQL Repository to store employee payroll data
-    //UC-04 ability to save employee payroll data to mysql DB
+    //UC-05 CRUD Service Methods with MySQL Database
 
     @Autowired
     private EmployeeRepository repository;
 
-    //get all employees
+    // Get all employees
     @Override
     public List<EmployeeDTO> getAllEmployees() {
-        return repository.findAll().stream().map(this::convertToDTO).toList();
+        log.info("Fetching all employees...");
+        return repository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
-    //get employee by id
+    // Get employee by ID
     @Override
-    public Optional<EmployeeDTO> getEmployeeById(Long id) {
+    public EmployeeDTO getEmployeeById(Long id) {
         Employee employee = repository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
-        return Optional.of(convertToDTO(employee));
+        return convertToDTO(employee);
     }
 
-    //add a new employee
+    // Create a new employee
     @Override
     public EmployeeDTO createEmployee(EmployeeDTO employeeDTO) {
-        Employee employee = convertToEntity(employeeDTO);
-        Employee savedEmployee = repository.save(employee);
+        log.info("Creating new employee...");
+        Employee savedEmployee = repository.save(convertToEntity(employeeDTO));
         return convertToDTO(savedEmployee);
     }
 
-    //update employee by its id
+    // Update an employee
     @Override
     public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO) {
+        log.info("Updating employee with ID: " + id);
         Employee employee = repository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
 
@@ -60,24 +61,24 @@ public class EmployeeService implements IEmployeeService {
         return convertToDTO(updatedEmployee);
     }
 
-    //delete employee
+    // Delete an employee
     @Override
     public void deleteEmployee(Long id) {
+        log.info("Deleting employee with ID: " + id);
         Employee employee = repository.findById(id)
                 .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
         repository.delete(employee);
     }
 
-    //convert to DTO
+    // Convert Employee to EmployeeDTO
     private EmployeeDTO convertToDTO(Employee employee) {
         return new EmployeeDTO(employee.getName(), employee.getSalary(), employee.getGender(),
                 employee.getStartDate(), employee.getNote(), employee.getProfilePic(), employee.getDepartment());
     }
 
-    //convert to entity
+    // Convert EmployeeDTO to Employee
     private Employee convertToEntity(EmployeeDTO dto) {
         return new Employee(dto.getName(), dto.getSalary(), dto.getGender(), dto.getStartDate(),
                 dto.getNote(), dto.getProfilePic(), dto.getDepartment());
     }
-
 }
